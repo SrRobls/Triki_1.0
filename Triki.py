@@ -34,11 +34,12 @@ def comproborar_valor_de_celda(tablero, celda_a_cambiar):
                 return False
             return True
 
-
+mostrar_triqui(tablero)
 i = 1
 celda_a_cambiar = 0
 while i <= 9:
     if i % 2 != 0:
+
         print('Turno Del Jugador #1')
         while True:
             try:
@@ -51,7 +52,9 @@ while i <= 9:
             print('Esa celda ya esta ocupada o esta fuera de los parametros (los parameros son entre 0 a 9), intenta con otra.')
         cambiar_celda(tablero, celda_a_cambiar, 'X')
         mostrar_triqui(tablero)
+
     else:
+
         print('Turno Del Jugador #2')
         while True:
             try:
@@ -66,3 +69,5 @@ while i <= 9:
         mostrar_triqui(tablero)
 
     i += 1
+    if i > 9:
+        print('Empate')
