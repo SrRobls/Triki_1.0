@@ -53,8 +53,11 @@ def obtener_filas_columans_diagonales(tablero):
 
     return filas_columnas_y_diagonales
 
-def comprobar_si_hay_ganador(valor_X_O, lista_filas_columnas_diagonales):
-    pass
+def comprobar_si_hay_ganador(valor_X_O):
+    for linea in obtener_filas_columans_diagonales(tablero):
+        if all(valor == valor_X_O for valor in linea):
+            return True
+    return False
 
 mostrar_triqui(tablero)
 i = 1
@@ -74,6 +77,9 @@ while i <= 9:
             print('Esa celda ya esta ocupada o esta fuera de los parametros (los parameros son entre 0 a 9), intenta con otra.')
         cambiar_celda(tablero, celda_a_cambiar, 'X')
         mostrar_triqui(tablero)
+        if comprobar_si_hay_ganador('X'):
+            print('El jugador #1 ha ganado. ¡Felicitaciones!. El juego ha terminado.')
+            break
 
     else:
 
@@ -89,6 +95,10 @@ while i <= 9:
             print('Esa celda ya esta ocupada o esta fuera de los parametros (los parameros son entre 0 a 9), intenta con otra.')
         cambiar_celda(tablero, celda_a_cambiar, 'O')
         mostrar_triqui(tablero)
+        if comprobar_si_hay_ganador('O'):
+            print('El jugador #2 ha ganado. ¡Felicitaciones!. El juego ha terminado.')
+            break
+
     i += 1
     if i > 9:
         print('Empate')
