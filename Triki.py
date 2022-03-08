@@ -12,6 +12,7 @@ tablero = [['|', 1, '|', 2, '|', 3, '|'],
           ['-------------------------'],
           ['|', 7, '|', 8, '|', 9, '|']]
 
+
 def mostrar_triqui(tablero):
     for linea in tablero:
         for elemento in linea:
@@ -33,6 +34,27 @@ def comproborar_valor_de_celda(tablero, celda_a_cambiar):
             if tablero[j][ind] == 'X' or tablero[j][ind] == 'O':
                 return False
             return True
+
+def obtener_filas_columans_diagonales(tablero):
+    filas_columnas_y_diagonales = []
+    indices = [1, 3, 5]
+
+    # Para filas:
+    for linea in [0, 2, 4]:
+        filas_columnas_y_diagonales.append([tablero[linea][k] for k in indices])
+    
+    # Para las colmunas:
+    for k in indices:
+        filas_columnas_y_diagonales.append([tablero[linea][k] for linea in [0, 2, 4]])
+
+    # Para las diagonales
+    filas_columnas_y_diagonales.append([tablero[0][1], tablero[2][3], tablero[4][5]])
+    filas_columnas_y_diagonales.append([tablero[0][5], tablero[2][3], tablero[4][1]])
+
+    return filas_columnas_y_diagonales
+
+def comprobar_si_hay_ganador(valor_X_O, lista_filas_columnas_diagonales):
+    pass
 
 mostrar_triqui(tablero)
 i = 1
@@ -67,7 +89,6 @@ while i <= 9:
             print('Esa celda ya esta ocupada o esta fuera de los parametros (los parameros son entre 0 a 9), intenta con otra.')
         cambiar_celda(tablero, celda_a_cambiar, 'O')
         mostrar_triqui(tablero)
-
     i += 1
     if i > 9:
         print('Empate')
