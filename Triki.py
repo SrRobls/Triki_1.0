@@ -1,3 +1,7 @@
+from itertools import count
+import random
+from secrets import choice
+
 # Este tablero sirve de referencia a la hora de verficar si ya sean puesto un valor X o O en el valor de la celda aportado por el ususario.
 tablero_guia = [['|', 1, '|', 2, '|', 3, '|'],
                 ['-------------------------'],
@@ -55,7 +59,9 @@ def obtener_filas_columans_diagonales(tablero):
     filas_columnas_y_diagonales.append([tablero[0][5], tablero[2][3], tablero[4][1]])
 
     return filas_columnas_y_diagonales
-# Funcion para la interfaz inicial. Le pide al usario si en que modo desea juagar 
+
+
+# Funcion para la interfaz inicial. Le pide al usario en que modo desea juagar 
 def opciones(): 
     print('''Hola!, Bienvenido. Selecciona el modo de juego:
          1. Para Jugador Vs Jugador
@@ -71,6 +77,7 @@ def opciones():
             print('Por favor, selecciona un valor valido.')
             continue
         return opcion
+
 # En el caso de que el usuario decida jugar contra la maquina, en esta funcion le pedira en que dificultad.
 def opcion2_opciones():
     print('''Ahora selecciona que difcultad:
@@ -88,8 +95,9 @@ def opcion2_opciones():
             continue
         return dificultad
 
+# Le solicita al usuario en que turno dese comenzar, si de primero o de ultimo.
 def opcion2_turnos():
-    print('''Deseas comenzar de primero o de ultimo??
+    print('''Deseas comenzar de primero o de segundo?
              1. Para comenzar primero
              2. Para comenzar segundo''')
     comienzo = 0
@@ -111,6 +119,16 @@ def comprobar_si_hay_ganador(valor_X_O):
             return True
     return False
 
+# La logica de modo facil de la maquina. basicamnete escoge las celdas vascias de forma aleatoria
+def opcio2_maquina_facil(valor_O):
+    while True:
+        linea = random.choice(obtener_filas_columans_diagonales(tablero))
+        valor_aleatorio = random.choice(linea)
+        if valor_aleatorio != 'X' and valor_aleatorio != 'O':
+            cambiar_celda(tablero, valor_aleatorio, valor_O)
+            break
+        
+# Funcion para ejecutar el codigo de Juagador Vs Jugador.
 def Jugador_Vs_Jugador(): 
     i = 1
     celda_a_cambiar = 0
@@ -158,9 +176,9 @@ def Jugador_Vs_Jugador():
             print('Empate')
             print('El juego ha terminado.')
 
-
+# Funcion para ejecutar el codigo de jugador vs maquina.
 def Juagdor_Vs_Maquina(dificultad):
-    i, final, celda_cambiar = 0, 0, 0
+    i, final = 0, 0
     turno = opcion2_turnos()
     mostrar_triqui(tablero)
 
@@ -168,7 +186,7 @@ def Juagdor_Vs_Maquina(dificultad):
         i, final = 1, 9
     else:
         i, final = 2, 10
-
+    i_inicial = i
     while i <= final:
          
         if i % 2 != 0:
@@ -185,15 +203,37 @@ def Juagdor_Vs_Maquina(dificultad):
             cambiar_celda(tablero, celda_a_cambiar, 'X')
             mostrar_triqui(tablero)
             if comprobar_si_hay_ganador('X'):
-                print('El jugador #1 ha ganado. ¡Felicitaciones!.')
+                print('El jugador ha ganado. ¡Felicitaciones!.')
                 print('El juego ha terminado.')
                 break
 
 
         elif i % 2 == 0:
             print('Turno de la maquina')
+            if dificultad == 1:
+                opcio2_maquina_facil('O')
+                mostrar_triqui(tablero)
+            elif dificultad == 2:
+                opcio2_maquina_facil('O')
+                mostrar_triqui(tablero)
+            elif dificultad == 3:
+                opcio2_maquina_facil('O')
+                mostrar_triqui(tablero)  
 
+            if comprobar_si_hay_ganador('O'):
+                print('La maquina te ha ganado :( ')
+                print('El juego ha terminado.')
+                break
         i += 1
+        if i_inicial == 1:
+            if i > 9:
+                print('Empate')
+                print('El juego ha terminado.')
+        elif i_inicial == 2:
+            if i > 10:
+                print('Empate')
+                print('El juego ha terminado.')
+
 
 if opciones() == 1:
     print('Modo de Juego: Juagador Vs Jugador')
