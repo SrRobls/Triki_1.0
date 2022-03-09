@@ -1,6 +1,4 @@
-from itertools import count
 import random
-from secrets import choice
 
 # Este tablero sirve de referencia a la hora de verficar si ya sean puesto un valor X o O en el valor de la celda aportado por el ususario.
 tablero_guia = [['|', 1, '|', 2, '|', 3, '|'],
@@ -120,13 +118,55 @@ def comprobar_si_hay_ganador(valor_X_O):
     return False
 
 # La logica de modo facil de la maquina. basicamnete escoge las celdas vascias de forma aleatoria
-def opcio2_maquina_facil(valor_O):
+def opcio2_maquina_facil():
     while True:
         linea = random.choice(obtener_filas_columans_diagonales(tablero))
         valor_aleatorio = random.choice(linea)
         if valor_aleatorio != 'X' and valor_aleatorio != 'O':
-            cambiar_celda(tablero, valor_aleatorio, valor_O)
+            cambiar_celda(tablero, valor_aleatorio, 'O')
             break
+
+def maquina_apunto_de_ganar():
+    lineas = obtener_filas_columans_diagonales(tablero)
+    for linea in lineas:
+        if linea.count('O') == 2 and linea.count('X') == 0:
+            for i in linea:
+                if i != 'O':
+                    cambiar_celda(tablero, i, 'O')
+                    break
+            return True
+    return False
+
+def opcion2_maquina_medio():
+    if maquina_apunto_de_ganar():
+        return
+    lineas = obtener_filas_columans_diagonales(tablero)
+    for linea in lineas:
+        if linea.count('O') >= 1 and linea.count('X') >= 0:
+            vlue = 0
+            for i in linea:
+                if i != 'O' and i != 'X':
+                    vlue = i
+                    cambiar_celda(tablero, vlue, 'O')
+                    return
+    opcio2_maquina_facil()
+
+
+def opcion2_maquina_dificil():
+    if maquina_apunto_de_ganar():
+        return
+    lineas = obtener_filas_columans_diagonales(tablero)
+    for linea in lineas:
+        if linea.count('X') == 2 and linea.count('O') == 0:
+            vlue = 0
+            for i in linea:
+                if i != 'X':
+                    vlue = i
+                    break
+            cambiar_celda(tablero, vlue, 'O')
+            return
+    opcion2_maquina_medio()
+            
         
 # Funcion para ejecutar el codigo de Juagador Vs Jugador.
 def Jugador_Vs_Jugador(): 
@@ -211,13 +251,23 @@ def Juagdor_Vs_Maquina(dificultad):
         elif i % 2 == 0:
             print('Turno de la maquina')
             if dificultad == 1:
-                opcio2_maquina_facil('O')
+                opcio2_maquina_facil()
                 mostrar_triqui(tablero)
             elif dificultad == 2:
-                opcio2_maquina_facil('O')
+                if i == 1 or i == 2:
+                    opcio2_maquina_facil()
+                    mostrar_triqui(tablero)
+                    i += 1
+                    continue
+                opcion2_maquina_medio()
                 mostrar_triqui(tablero)
             elif dificultad == 3:
-                opcio2_maquina_facil('O')
+                if i == 1 or i == 2:
+                    opcio2_maquina_facil()
+                    mostrar_triqui(tablero)
+                    i += 1
+                    continue
+                opcion2_maquina_dificil()
                 mostrar_triqui(tablero)  
 
             if comprobar_si_hay_ganador('O'):
