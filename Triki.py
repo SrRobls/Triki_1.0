@@ -55,7 +55,7 @@ def obtener_filas_columans_diagonales(tablero):
     filas_columnas_y_diagonales.append([tablero[0][5], tablero[2][3], tablero[4][1]])
 
     return filas_columnas_y_diagonales
-
+# Funcion para la interfaz inicial. Le pide al usario si en que modo desea juagar 
 def opciones(): 
     print('''Hola!, Bienvenido. Selecciona el modo de juego:
          1. Para Jugador Vs Jugador
@@ -71,7 +71,7 @@ def opciones():
             print('Por favor, selecciona un valor valido.')
             continue
         return opcion
-
+# En el caso de que el usuario decida jugar contra la maquina, en esta funcion le pedira en que dificultad.
 def opcion2_opciones():
     print('''Ahora selecciona que difcultad:
                 1. Para dificultad baja
@@ -87,6 +87,22 @@ def opcion2_opciones():
             print('Por favor, selecciona un valor valido.')
             continue
         return dificultad
+
+def opcion2_turnos():
+    print('''Deseas comenzar de primero o de ultimo??
+             1. Para comenzar primero
+             2. Para comenzar segundo''')
+    comienzo = 0
+    while True:
+        try:
+            comienzo = int(input('Seleciona: '))
+        except ValueError:
+            print('Por favor, selecciona un valor valido.')
+            continue
+        if comienzo > 2 or comienzo < 0:
+            print('Por favor, selecciona un valor valido.')
+            continue
+        return comienzo
 
 # Comprobamos si hay un ganador cuando algunos de los dos jugadores termina de introducir su valor.
 def comprobar_si_hay_ganador(valor_X_O):
@@ -143,6 +159,42 @@ def Jugador_Vs_Jugador():
             print('El juego ha terminado.')
 
 
+def Juagdor_Vs_Maquina(dificultad):
+    i, final, celda_cambiar = 0, 0, 0
+    turno = opcion2_turnos()
+    mostrar_triqui(tablero)
+
+    if turno == 1:
+        i, final = 1, 9
+    else:
+        i, final = 2, 10
+
+    while i <= final:
+         
+        if i % 2 != 0:
+            print('Turno del juagdor')
+            while True:
+                try:
+                    celda_a_cambiar = int(input('¿En cual celda deseas porner la X?: '))
+                except ValueError:
+                    print('El valor es incorreto')
+                    continue
+                if comproborar_valor_de_celda(tablero, celda_a_cambiar):
+                    break
+                print('Esa celda ya esta ocupada o esta fuera de los parametros (los parameros son entre 0 a 9), intenta con otra.')
+            cambiar_celda(tablero, celda_a_cambiar, 'X')
+            mostrar_triqui(tablero)
+            if comprobar_si_hay_ganador('X'):
+                print('El jugador #1 ha ganado. ¡Felicitaciones!.')
+                print('El juego ha terminado.')
+                break
+
+
+        elif i % 2 == 0:
+            print('Turno de la maquina')
+
+        i += 1
+
 if opciones() == 1:
     print('Modo de Juego: Juagador Vs Jugador')
     mostrar_triqui(tablero)
@@ -156,4 +208,4 @@ else:
         print('Dificultad: Media')
     elif opcion2 == 3:
         print('Dificultad: Alta')
-    mostrar_triqui(tablero)
+    Juagdor_Vs_Maquina(opcion2)
