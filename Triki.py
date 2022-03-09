@@ -1,24 +1,31 @@
-#Este tablero sirve de referencia al hora de verficar si ya sean puesto un valor X o O en el valor de la celda aportado por el ususario.
+print('''Hola!, Bienvenido. Selecciona el modo de juego:
+         1. Para Jugador Vs Jugador
+         2. Para Jugador Vs Maquina''')
+
+opcion = int(input('Opcion: '))
+
+# Este tablero sirve de referencia a la hora de verficar si ya sean puesto un valor X o O en el valor de la celda aportado por el ususario.
 tablero_guia = [['|', 1, '|', 2, '|', 3, '|'],
                 ['-------------------------'],
                 ['|', 4, '|', 5, '|', 6, '|'],
                 ['-------------------------'],
                 ['|', 7, '|', 8, '|', 9, '|']]
 
-# En este tablero es donde ser haran los cambios 
+# En este tablero es donde se haran los cambios y se mostrara por pantalla, y es donde se jugara
 tablero = [['|', 1, '|', 2, '|', 3, '|'],
           ['-------------------------'],
           ['|', 4, '|', 5, '|', 6, '|'],
           ['-------------------------'],
           ['|', 7, '|', 8, '|', 9, '|']]
 
-
+# Funcion para mostrar el tablero
 def mostrar_triqui(tablero):
     for linea in tablero:
         for elemento in linea:
             print(elemento, end='   ')
         print()
 
+# Funcion para cambiar el valor de la celdad por el valor X o O.
 def cambiar_celda(tablero, celda_a_cambiar, valor_X_O):
     for linea in tablero:
         if celda_a_cambiar in linea:
@@ -35,12 +42,14 @@ def comproborar_valor_de_celda(tablero, celda_a_cambiar):
                 return False
             return True
 
+# Funcion para obtener todas las filas, columnas y diagonales del tablero donde estamos juagndo
 def obtener_filas_columans_diagonales(tablero):
     filas_columnas_y_diagonales = []
+    # Notar que los indices de los elementos donde vamosa trabajar son estos. esto lo hago para obtener meramnete estos valores y no los '|'
     indices = [1, 3, 5]
 
     # Para filas:
-    for linea in [0, 2, 4]:
+    for linea in [0, 2, 4]: # Linea itera por cada una de los elementos/listas del tablero
         filas_columnas_y_diagonales.append([tablero[linea][k] for k in indices])
     
     # Para las colmunas:
@@ -53,6 +62,7 @@ def obtener_filas_columans_diagonales(tablero):
 
     return filas_columnas_y_diagonales
 
+# Comprobamos si hay un ganador cuando algunos de los dos jugadores termina de introducir su valor.
 def comprobar_si_hay_ganador(valor_X_O):
     for linea in obtener_filas_columans_diagonales(tablero):
         if all(valor == valor_X_O for valor in linea):
@@ -78,7 +88,8 @@ while i <= 9:
         cambiar_celda(tablero, celda_a_cambiar, 'X')
         mostrar_triqui(tablero)
         if comprobar_si_hay_ganador('X'):
-            print('El jugador #1 ha ganado. ¡Felicitaciones!. El juego ha terminado.')
+            print('El jugador #1 ha ganado. ¡Felicitaciones!.')
+            print('El juego ha terminado.')
             break
 
     else:
@@ -96,9 +107,11 @@ while i <= 9:
         cambiar_celda(tablero, celda_a_cambiar, 'O')
         mostrar_triqui(tablero)
         if comprobar_si_hay_ganador('O'):
-            print('El jugador #2 ha ganado. ¡Felicitaciones!. El juego ha terminado.')
+            print('El jugador #2 ha ganado. ¡Felicitaciones!.')
+            print('El juego ha terminado.')
             break
 
     i += 1
     if i > 9:
         print('Empate')
+        print('El juego ha terminado.')
