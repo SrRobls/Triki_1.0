@@ -341,3 +341,4 @@ while True:
         break
     os.system('cls')
     tablero = reiniciar_tablero()
+    
