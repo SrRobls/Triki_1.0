@@ -146,9 +146,9 @@ def comprobar_si_hay_ganador(valor_X_O):
     return False
 
 # La logica de modo facil de la maquina. basicamnete escoge las celdas vascias de forma aleatoria
-def opcio2_maquina_facil():
+def opcio2_maquina_facil(filas_columnas_diagonales):
     while True:
-        linea = random.choice(obtener_filas_columans_diagonales(tablero))
+        linea = random.choice(filas_columnas_diagonales)
         valor_aleatorio = random.choice(linea)
         if valor_aleatorio != 'X' and valor_aleatorio != 'O':
             cambiar_celda(tablero, valor_aleatorio, 'O')
@@ -156,8 +156,8 @@ def opcio2_maquina_facil():
 
 # Funcion para que la mauina verifique si le falta un elemento para ganar, si es asi. coloca el valor correspondiente 'O' en esa celda y gana
 # si no, sigue. esta funcion solo aplica para dificultada media y alta.
-def maquina_apunto_de_ganar():
-    lineas = obtener_filas_columans_diagonales(tablero)
+def maquina_apunto_de_ganar(filas_columnas_diagonales):
+    lineas = filas_columnas_diagonales
     for linea in lineas:
         if linea.count('O') == 2 and linea.count('X') == 0:
             for i in linea:
@@ -168,10 +168,10 @@ def maquina_apunto_de_ganar():
     return False
 
 # Funcion para la maquina en dificultad media 
-def opcion2_maquina_medio():
-    if maquina_apunto_de_ganar():
+def opcion2_maquina_medio(filas_columans_diagonales):
+    if maquina_apunto_de_ganar(filas_columans_diagonales):
         return
-    lineas = obtener_filas_columans_diagonales(tablero)
+    lineas = filas_columans_diagonales
     for linea in lineas:
         if linea.count('O') >= 1 and linea.count('X') >= 0:
             vlue = 0
@@ -180,13 +180,13 @@ def opcion2_maquina_medio():
                     vlue = i
                     cambiar_celda(tablero, vlue, 'O')
                     return
-    opcio2_maquina_facil()
+    opcio2_maquina_facil(lineas)
 
 # Funcion para la maquina en dificultad alta
-def opcion2_maquina_dificil():
-    if maquina_apunto_de_ganar():
+def opcion2_maquina_dificil(filas_columans_diagonales):
+    if maquina_apunto_de_ganar(filas_columans_diagonales):
         return
-    lineas = obtener_filas_columans_diagonales(tablero)
+    lineas = filas_columans_diagonales
     for linea in lineas:
         if linea.count('X') == 2 and linea.count('O') == 0:
             vlue = 0
@@ -196,7 +196,7 @@ def opcion2_maquina_dificil():
                     break
             cambiar_celda(tablero, vlue, 'O')
             return
-    opcion2_maquina_medio()
+    opcion2_maquina_medio(lineas)
             
         
 # Funcion para ejecutar el codigo de Juagador Vs Jugador.
@@ -282,23 +282,23 @@ def Juagdor_Vs_Maquina(dificultad):
         elif i % 2 == 0:
             print('Turno de la maquina')
             if dificultad == 1:
-                opcio2_maquina_facil()
+                opcio2_maquina_facil(obtener_filas_columans_diagonales(tablero))
                 mostrar_triqui(tablero)
             elif dificultad == 2:
                 if i == 1 or i == 2:
-                    opcio2_maquina_facil()
+                    opcio2_maquina_facil(obtener_filas_columans_diagonales(tablero))
                     mostrar_triqui(tablero)
                     i += 1
                     continue
-                opcion2_maquina_medio()
+                opcion2_maquina_medio(obtener_filas_columans_diagonales(tablero))
                 mostrar_triqui(tablero)
             elif dificultad == 3:
                 if i == 1 or i == 2:
-                    opcio2_maquina_facil()
+                    opcio2_maquina_facil(obtener_filas_columans_diagonales(tablero))
                     mostrar_triqui(tablero)
                     i += 1
                     continue
-                opcion2_maquina_dificil()
+                opcion2_maquina_dificil(obtener_filas_columans_diagonales(tablero))
                 mostrar_triqui(tablero)  
 
             if comprobar_si_hay_ganador('O'):
