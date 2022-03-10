@@ -1,6 +1,8 @@
 import random
+import os
 
-# Este tablero sirve de referencia a la hora de verficar si ya sean puesto un valor X o O en el valor de la celda aportado por el ususario.
+# Este tablero sirve de referencia a la hora de verficar si ya sean puesto un valor X o O en el valor de la celda aportado por el ususario
+# y tambien para reiniciar el tablero si el ususario quiere volever a jugar.
 tablero_guia = [['|', 1, '|', 2, '|', 3, '|'],
                 ['-------------------------'],
                 ['|', 4, '|', 5, '|', 6, '|'],
@@ -13,6 +15,23 @@ tablero = [['|', 1, '|', 2, '|', 3, '|'],
           ['|', 4, '|', 5, '|', 6, '|'],
           ['-------------------------'],
           ['|', 7, '|', 8, '|', 9, '|']]
+
+# Codigo de la interfaz de inicio
+def interfaz_inicial():
+    if opciones() == 1:
+        print('Modo de Juego: Juagador Vs Jugador')
+        mostrar_triqui(tablero)
+        Jugador_Vs_Jugador()
+    else:
+        print('Modo de Juego: Juagador Vs Maquina')
+        opcion2 = opcion2_opciones()
+        if opcion2 == 1:
+            print('Dificultad: Baja')
+        elif opcion2 == 2:
+            print('Dificultad: Media')
+        elif opcion2 == 3:
+            print('Dificultad: Alta')
+        Juagdor_Vs_Maquina(opcion2)
 
 # Funcion para mostrar el tablero
 def mostrar_triqui(tablero):
@@ -58,10 +77,19 @@ def obtener_filas_columans_diagonales(tablero):
 
     return filas_columnas_y_diagonales
 
+# Funcion para reiniciar el tablero, en caso de que se seguira jugando
+def reiniciar_tablero():
+    reinicio = [['|', 1, '|', 2, '|', 3, '|'],
+                ['-------------------------'],
+                ['|', 4, '|', 5, '|', 6, '|'],
+                ['-------------------------'],
+                ['|', 7, '|', 8, '|', 9, '|']]
+    return reinicio
+
 
 # Funcion para la interfaz inicial. Le pide al usario en que modo desea juagar 
 def opciones(): 
-    print('''Hola!, Bienvenido. Selecciona el modo de juego:
+    print('''Selecciona el modo de juego:
          1. Para Jugador Vs Jugador
          2. Para Jugador Vs Maquina''')
     opcion = 0
@@ -126,6 +154,8 @@ def opcio2_maquina_facil():
             cambiar_celda(tablero, valor_aleatorio, 'O')
             break
 
+# Funcion para que la mauina verifique si le falta un elemento para ganar, si es asi. coloca el valor correspondiente 'O' en esa celda y gana
+# si no, sigue. esta funcion solo aplica para dificultada media y alta.
 def maquina_apunto_de_ganar():
     lineas = obtener_filas_columans_diagonales(tablero)
     for linea in lineas:
@@ -137,6 +167,7 @@ def maquina_apunto_de_ganar():
             return True
     return False
 
+# Funcion para la maquina en dificultad media 
 def opcion2_maquina_medio():
     if maquina_apunto_de_ganar():
         return
@@ -151,7 +182,7 @@ def opcion2_maquina_medio():
                     return
     opcio2_maquina_facil()
 
-
+# Funcion para la maquina en dificultad alta
 def opcion2_maquina_dificil():
     if maquina_apunto_de_ganar():
         return
@@ -285,17 +316,28 @@ def Juagdor_Vs_Maquina(dificultad):
                 print('El juego ha terminado.')
 
 
-if opciones() == 1:
-    print('Modo de Juego: Juagador Vs Jugador')
-    mostrar_triqui(tablero)
-    Jugador_Vs_Jugador()
-else:
-    print('Modo de Juego: Juagador Vs Maquina')
-    opcion2 = opcion2_opciones()
-    if opcion2 == 1:
-        print('Dificultad: Baja')
-    elif opcion2 == 2:
-        print('Dificultad: Media')
-    elif opcion2 == 3:
-        print('Dificultad: Alta')
-    Juagdor_Vs_Maquina(opcion2)
+# Codigo principal.
+print('Hola!, Bienvenido!')
+while True:
+    seguir = 0
+    interfaz_inicial()
+    while True:
+        print('''Deseas Juagar Otra Partida?
+                                    1. Si
+                                    2. No''')
+        try:
+            seguir = int(input('Seleccion: '))
+        except ValueError:
+            print('Por favor escoge un valor valido.')
+            continue
+        if seguir > 2 and seguir <= 0:
+            print('Por favor escoge un valor valido.')
+            continue
+        else:
+            break
+    if seguir == 2:
+        os.system('cls')
+        print('Gracias por jugar!')    
+        break
+    os.system('cls')
+    tablero = reiniciar_tablero()
