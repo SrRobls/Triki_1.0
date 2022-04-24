@@ -337,7 +337,7 @@ while True:
             break
     if seguir == 2:
         os.system('cls')
-        print('Gracias por jugar!')    
+        print('Gracias por jugar!!')    
         break
     os.system('cls')
     tablero = reiniciar_tablero()
